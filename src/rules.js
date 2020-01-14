@@ -7,9 +7,7 @@ var DISABLE_TAG_REGEX = /@lint-disable(.*)/;
 
 function getAllRules(additionalRulesDirs) {
   var rules = {};
-  var rulesDirs = [
-    path.join(__dirname, 'rules')
-  ].concat(additionalRulesDirs || []);
+  var rulesDirs = [path.join(__dirname, 'rules')].concat(additionalRulesDirs || []);
   rulesDirs.forEach(function(rulesDir) {
     rulesDir = path.resolve(rulesDir);
     fs.readdirSync(rulesDir).forEach(function(file) {
@@ -99,6 +97,8 @@ function isRuleDisableTag(rule, tag) {
     return true; // if no rule is configured, all rules are disabled
   }
 
+  disabledRules = disabledRules.replace(/^=+/, '');
+
   // multiple disabled rules can be concatenated with a comma
   return disabledRules.split(',').some(function(disabledRule) {
     return disabledRule.trim() === rule;
@@ -110,5 +110,5 @@ module.exports = {
   isRuleEnabled: isRuleEnabled,
   runAllEnabledRules: runAllEnabledRules,
   getRule: getRule,
-  getAllRules: getAllRules
+  getAllRules: getAllRules,
 };
